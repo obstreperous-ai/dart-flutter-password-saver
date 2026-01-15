@@ -63,7 +63,7 @@ jobs:
           if [ "${{ matrix.platform }}" == "linux" ]; then
             tar -czf ${{ matrix.artifact_name }}.tar.gz *
           else
-            zip -r ${{ matrix.artifact_name }}.zip password_saver.app
+            zip -r ${{ matrix.artifact_name }}.zip *.app
           fi
       
       - name: Upload artifacts
