@@ -11,6 +11,9 @@ jobs:
     name: Build and Test on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     
+    permissions:
+      contents: read
+    
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
