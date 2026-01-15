@@ -47,8 +47,8 @@ jobs:
           # This is a placeholder for manual review or custom scanning
           echo "Please review dependencies manually at https://pub.dev"
           echo ""
-          echo "Key dependencies to monitor:"
-          flutter pub deps --style=compact | grep -E "^\|" | head -20 || true
+          echo "=== Direct Dependencies ==="
+          flutter pub deps --style=compact 2>&1 | head -30 || echo "Unable to list dependencies"
       
       - name: Upload dependency information
         uses: actions/upload-artifact@v4
