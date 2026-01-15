@@ -8,21 +8,40 @@ cmake_policy(SET CMP0063 NEW)
 
 set(CMAKE_INSTALL_RPATH "$ORIGIN/lib")
 
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
+# Root filesystem for cross-building.
+if(FLUTTER_TARGET_PLATFORM_SYSROOT)
+  set(CMAKE_SYSROOT ${FLUTTER_TARGET_PLATFORM_SYSROOT})
+  set(CMAKE_FIND_ROOT_PATH ${CMAKE_SYSROOT})
+  set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+  set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
+  set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+  set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+endif()
 
-# Configure build library name, e.g. flutter_linux-<mode>.
-set(FLUTTER_LIBRARY "${BINARY_NAME}_flutter")
+# Configuration provided via flutter tool.
+set(FLUTTER_TARGET_PLATFORM "linux-x64")
 
-# App source
+# Use Unicode for all projects.
+add_definitions(-DUNICODE -D_UNICODE)
+
+# Compilation settings that should be applied to most targets.
+function(APPLY_STANDARD_SETTINGS TARGET)
+  target_compile_features(${TARGET} PUBLIC cxx_std_14)
+  target_compile_options(${TARGET} PRIVATE -Wall -Werror)
+  target_compile_options(${TARGET} PRIVATE "$<$<NOT:$<CONFIG:Debug>>:-O3>")
+  target_compile_definitions(${TARGET} PRIVATE "$<$<NOT:$<CONFIG:Debug>>:NDEBUG>")
+endfunction()
+
+set(FLUTTER_MANAGED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/flutter")
+
+# Flutter library and tool build rules.
+add_subdirectory(${FLUTTER_MANAGED_DIR})
+
+# Application build
 set(SOURCES
   "main.cc"
   "my_application.cc"
 )
-
-# Apply a standard set of build settings that are configured in the
-# application-level CMakeLists.txt. This can be removed for applications
-# that need different build settings.
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DFLUTTER_TARGET_PLATFORM_LINUX")
 
 add_executable(${BINARY_NAME}
   ${SOURCES}
