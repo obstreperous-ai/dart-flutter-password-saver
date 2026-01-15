@@ -27,3 +27,26 @@ doc/api/
 
 .flutter-plugins
 .flutter-plugins-dependencies
+
+# Flutter/Dart/Pub related
+**/generated_plugin_registrant.dart
+**/generated_plugins.cmake
+**/GeneratedPluginRegistrant.swift
+**/GeneratedPluginRegistrant.m
+**/GeneratedPluginRegistrant.h
+.flutter-plugins-dependencies
+
+# Platform-specific build outputs
+linux/flutter/ephemeral/
+macos/Flutter/ephemeral/
+macos/Pods/
+macos/.symlinks/
+windows/flutter/ephemeral/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
