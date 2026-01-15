@@ -38,7 +38,7 @@ lib/
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/obstreperous-ai/dart-flutter-password-saver.git
+git clone <repository-url>
 cd dart-flutter-password-saver
 ```
 

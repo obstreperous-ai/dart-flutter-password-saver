@@ -148,10 +148,11 @@ class _HomePageState extends State<HomePage> {
                           itemCount: _filteredPasswords.length,
                           itemBuilder: (context, index) {
                             final entry = _filteredPasswords[index];
+                            final originalIndex = _passwords.indexOf(entry);
                             return PasswordListItem(
                               entry: entry,
-                              onTap: () => _editPassword(_passwords.indexOf(entry)),
-                              onDelete: () => _deletePassword(_passwords.indexOf(entry)),
+                              onTap: () => _editPassword(originalIndex),
+                              onDelete: () => _deletePassword(originalIndex),
                             );
                           },
                         ),
@@ -185,7 +186,7 @@ class PasswordListItem extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: ListTile(
         leading: CircleAvatar(
-          child: Text(entry.title[0].toUpperCase()),
+          child: Text(entry.title.isNotEmpty ? entry.title[0].toUpperCase() : '?'),
         ),
         title: Text(entry.title),
         subtitle: Text(entry.username),
