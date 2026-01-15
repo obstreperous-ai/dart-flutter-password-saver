@@ -28,18 +28,39 @@ lib/
 
 ## Setup and Running
 
-### Prerequisites
+### Using Dev Container (Recommended)
+
+The easiest way to get started is using the provided Dev Container configuration:
+
+1. Install [Docker](https://www.docker.com/get-started) and [VS Code](https://code.visualstudio.com/)
+2. Install the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) for VS Code
+3. Clone the repository:
+```bash
+git clone <repository-url>
+```
+4. Open the project in VS Code
+5. When prompted, click "Reopen in Container" (or run "Dev Containers: Reopen in Container" from the command palette)
+
+The dev container will automatically:
+- Install Flutter SDK (stable channel)
+- Install required Linux desktop dependencies
+- Run `flutter pub get` to fetch dependencies
+- Run `flutter doctor` to verify the setup
+- Run `dart analyze` to check code quality
+
+### Manual Installation
+
+#### Prerequisites
 
 - Flutter SDK (>= 3.0.0)
 - For Linux: GTK+ 3.0 development libraries
 - For macOS: Xcode and CocoaPods
 
-### Installation
+#### Installation
 
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd dart-flutter-password-saver
 ```
 
 2. Get Flutter dependencies:
