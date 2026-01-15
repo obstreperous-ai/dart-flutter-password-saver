@@ -37,7 +37,6 @@ The easiest way to get started is using the provided Dev Container configuration
 3. Clone the repository:
 ```bash
 git clone <repository-url>
-cd dart-flutter-password-saver
 ```
 4. Open the project in VS Code
 5. When prompted, click "Reopen in Container" (or run "Dev Containers: Reopen in Container" from the command palette)
@@ -62,7 +61,6 @@ The dev container will automatically:
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd dart-flutter-password-saver
 ```
 
 2. Get Flutter dependencies:
