@@ -17,10 +17,6 @@
     }
   },
   
-  "postAttachCommand": {
-    "install-linux-deps": "sudo apt-get update && sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev libstdc++-12-dev libsecret-1-dev"
-  },
-  
   "customizations": {
     "vscode": {
       "extensions": [
@@ -45,15 +41,15 @@
     }
   },
   
-  "postCreateCommand": "flutter config --enable-linux-desktop && flutter pub get && flutter doctor && dart analyze",
+  "postCreateCommand": {
+    "install-deps": "sudo apt-get update && sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev libstdc++-12-dev libsecret-1-dev",
+    "enable-desktop": "flutter config --enable-linux-desktop",
+    "get-packages": "flutter pub get",
+    "verify-setup": "flutter doctor",
+    "analyze": "dart analyze"
+  },
   
   "remoteUser": "vscode",
-  
-  "forwardPorts": [],
-  
-  "mounts": [
-    "source=/var/run/docker.sock,target=/var/run/docker-host.sock,type=bind"
-  ],
   
   "containerEnv": {
     "FLUTTER_ROOT": "/home/vscode/.asdf/installs/flutter/stable",
