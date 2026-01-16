@@ -2,7 +2,14 @@
 //  Generated file. Do not edit.
 //
 
-// clang-format off
+import FlutterMacOS
+import Foundation
 
-#include "GeneratedPluginRegistrant.h"
+import flutter_secure_storage_macos
+import path_provider_foundation
+
+func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
+  FlutterSecureStoragePlugin.register(with: registry.registrar(forPlugin: "FlutterSecureStoragePlugin"))
+  PathProviderPlugin.register(with: registry.registrar(forPlugin: "PathProviderPlugin"))
+}
 
