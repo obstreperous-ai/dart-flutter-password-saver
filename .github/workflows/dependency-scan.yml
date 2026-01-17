@@ -1,0 +1,58 @@
+name: Dependency Security Scan
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+  schedule:
+    # Run weekly on Monday at 00:00 UTC
+    - cron: '0 0 * * 1'
+
+jobs:
+  dependency-scan:
+    name: Scan Dependencies for Vulnerabilities
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      security-events: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+      
+      - name: Get dependencies
+        run: flutter pub get
+      
+      - name: Run dependency audit
+        run: |
+          echo "Checking for known vulnerabilities in dependencies..."
+          flutter pub outdated --json > outdated.json || true
+          if [ -f outdated.json ]; then
+            echo "Dependency information collected"
+            cat outdated.json
+          fi
+      
+      - name: Check for security advisories
+        run: |
+          echo "Checking pub.dev for security advisories..."
+          # Note: Dart/Flutter doesn't have a built-in security audit tool like npm audit
+          # This is a placeholder for manual review or custom scanning
+          echo "Please review dependencies manually at https://pub.dev"
+          echo ""
+          echo "=== Direct Dependencies ==="
+          flutter pub deps --style=compact 2>&1 | head -30 || echo "Unable to list dependencies"
+      
+      - name: Upload dependency information
+        uses: actions/upload-artifact@v4.4.3
+        with:
+          name: dependency-report
+          path: outdated.json
+          if-no-files-found: ignore

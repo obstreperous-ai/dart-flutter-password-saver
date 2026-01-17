@@ -39,8 +39,8 @@ add_subdirectory(${FLUTTER_MANAGED_DIR})
 
 # Application build
 set(SOURCES
-  "main.cc"
-  "my_application.cc"
+  "Runner/main.cc"
+  "Runner/my_application.cc"
 )
 
 add_executable(${BINARY_NAME}

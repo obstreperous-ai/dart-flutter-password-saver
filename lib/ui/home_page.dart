@@ -186,7 +186,9 @@ class PasswordListItem extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: ListTile(
         leading: CircleAvatar(
-          child: Text(entry.title.isNotEmpty ? entry.title[0].toUpperCase() : '?'),
+          child: Text(entry.title.isNotEmpty
+              ? entry.title[0].toUpperCase()
+              : '?'),
         ),
         title: Text(entry.title),
         subtitle: Text(entry.username),
@@ -306,7 +308,9 @@ class _PasswordEditPageState extends State<PasswordEditPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                      icon: Icon(_obscurePassword ? Icons.visibility : Icons.visibility_off),
+                      icon: Icon(_obscurePassword
+                          ? Icons.visibility
+                          : Icons.visibility_off),
                       onPressed: () {
                         setState(() {
                           _obscurePassword = !_obscurePassword;
@@ -316,9 +320,11 @@ class _PasswordEditPageState extends State<PasswordEditPage> {
                     IconButton(
                       icon: const Icon(Icons.copy),
                       onPressed: () {
-                        Clipboard.setData(ClipboardData(text: _passwordController.text));
+                        Clipboard.setData(
+                            ClipboardData(text: _passwordController.text));
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Password copied to clipboard')),
+                          const SnackBar(
+                              content: Text('Password copied to clipboard')),
                         );
                       },
                     ),
