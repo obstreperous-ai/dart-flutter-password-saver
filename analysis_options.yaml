@@ -34,7 +34,7 @@ linter:
     - prefer_const_declarations
     - avoid_print
     
-    # Error rules
+    # Error rules - catch potential bugs
     - avoid_empty_else
     - avoid_relative_lib_imports
     - avoid_slow_async_io
@@ -54,19 +54,16 @@ linter:
     - unrelated_type_equality_checks
     - valid_regexps
     
-    # Style rules
+    # Style rules - enforce good practices
     - always_declare_return_types
-    - always_put_control_body_on_new_line
     - always_require_non_null_named_parameters
     - annotate_overrides
     - avoid_bool_literals_in_conditional_expressions
-    - avoid_catches_without_on_clauses
     - avoid_catching_errors
     - avoid_field_initializers_in_const_classes
     - avoid_function_literals_in_foreach_calls
     - avoid_init_to_null
     - avoid_null_checks_in_equality_operators
-    - avoid_positional_boolean_parameters
     - avoid_renaming_method_parameters
     - avoid_return_types_on_setters
     - avoid_returning_null_for_void
@@ -78,7 +75,6 @@ linter:
     - await_only_futures
     - camel_case_extensions
     - camel_case_types
-    - cascade_invocations
     - constant_identifier_names
     - curly_braces_in_flow_control_structures
     - directives_ordering
@@ -91,11 +87,9 @@ linter:
     - leading_newlines_in_multiline_strings
     - library_names
     - library_prefixes
-    - lines_longer_than_80_chars
     - no_leading_underscores_for_library_prefixes
     - no_leading_underscores_for_local_identifiers
     - null_closures
-    - omit_local_variable_types
     - one_member_abstracts
     - only_throw_errors
     - overridden_fields

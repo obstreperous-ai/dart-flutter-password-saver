@@ -13,7 +13,7 @@ class PasswordEntry {
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  PasswordEntry({
+  const PasswordEntry({
     required this.id,
     required this.title,
     required this.username,
@@ -33,14 +33,15 @@ class PasswordEntry {
         'updatedAt': updatedAt.toIso8601String(),
       };
 
-  factory PasswordEntry.fromJson(Map<String, dynamic> json) => PasswordEntry(
-        id: json['id'],
-        title: json['title'],
-        username: json['username'],
-        password: json['password'],
-        notes: json['notes'],
-        createdAt: DateTime.parse(json['createdAt']),
-        updatedAt: DateTime.parse(json['updatedAt']),
+  factory PasswordEntry.fromJson(Map<String, dynamic> json) =>
+      PasswordEntry(
+        id: json['id'] as String,
+        title: json['title'] as String,
+        username: json['username'] as String,
+        password: json['password'] as String,
+        notes: json['notes'] as String?,
+        createdAt: DateTime.parse(json['createdAt'] as String),
+        updatedAt: DateTime.parse(json['updatedAt'] as String),
       );
 }
 
@@ -57,8 +58,8 @@ class EncryptedPasswordStorage {
   /// Initialize the encryption system
   Future<void> initialize() async {
     // Try to load existing key and IV from secure storage
-    String? keyString = await _secureStorage.read(key: _keyName);
-    String? ivString = await _secureStorage.read(key: _ivName);
+    final keyString = await _secureStorage.read(key: _keyName);
+    final ivString = await _secureStorage.read(key: _ivName);
 
     if (keyString == null || ivString == null) {
       // Generate new key and IV
