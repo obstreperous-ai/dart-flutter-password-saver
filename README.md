@@ -86,6 +86,84 @@ flutter run -d linux
 flutter run -d macos
 ```
 
+## Development Guidelines
+
+### Code Quality and Formatting
+
+This project maintains high code quality standards. Before submitting a PR, ensure your code passes all quality checks:
+
+#### Automated Pre-commit Hooks
+
+We provide git pre-commit hooks that automatically check code quality before each commit:
+
+**Option 1: Simple Git Hooks (Recommended)**
+```bash
+./scripts/install-git-hooks.sh
+```
+
+**Option 2: Using pre-commit framework**
+```bash
+./setup-hooks.sh
+```
+This requires Python and pip to be installed.
+
+#### Manual Code Quality Checks
+
+If you prefer to run checks manually before committing:
+
+1. **Format your code:**
+```bash
+dart format .
+```
+
+2. **Analyze code for issues:**
+```bash
+dart analyze --fatal-infos
+```
+
+3. **Check for dependency vulnerabilities:**
+```bash
+flutter pub outdated
+```
+
+#### What Gets Checked
+
+- **Code Formatting**: Ensures consistent code style across the project
+- **Static Analysis**: Catches potential bugs, code smells, and style issues
+- **Dependency Security**: Identifies outdated or vulnerable dependencies
+
+#### CI/CD Integration
+
+All quality checks run automatically in CI:
+- **Code Quality Workflow**: Runs formatting and analysis checks
+- **Build and Test Workflow**: Builds for Linux and macOS
+- **Dependency Scan Workflow**: Checks for vulnerable dependencies
+
+### Before Submitting a PR
+
+**Required steps before raising a pull request:**
+
+1. ✅ Install and run pre-commit hooks OR manually run:
+   - `dart format .`
+   - `dart analyze --fatal-infos`
+   
+2. ✅ Ensure all files are properly formatted
+
+3. ✅ Fix any analysis warnings or errors
+
+4. ✅ Test your changes locally:
+   - Linux: `flutter run -d linux`
+   - macOS: `flutter run -d macos`
+
+5. ✅ Check for dependency issues:
+   - `flutter pub outdated`
+
+6. ✅ Verify builds succeed:
+   - Linux: `flutter build linux`
+   - macOS: `flutter build macos`
+
+**Note**: CI will automatically verify these checks. PRs that fail quality checks will not be merged.
+
 ## Security
 
 - Encryption keys are stored securely using the operating system's keychain/keyring

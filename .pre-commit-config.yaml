@@ -1,0 +1,51 @@
+# Pre-commit hooks configuration for Dart/Flutter projects
+# See https://pre-commit.com for more information
+
+repos:
+  # General file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: ^(lib/.*/.*\.g\.dart|.*\.freezed\.dart)$
+      - id: end-of-file-fixer
+        exclude: ^(lib/.*/.*\.g\.dart|.*\.freezed\.dart)$
+      - id: check-yaml
+      - id: check-json
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: check-merge-conflict
+      - id: detect-private-key
+      - id: mixed-line-ending
+
+  # Dart formatting
+  - repo: local
+    hooks:
+      - id: dart-format
+        name: dart format
+        entry: dart format
+        language: system
+        files: \.dart$
+        pass_filenames: true
+        
+      - id: dart-analyze
+        name: dart analyze
+        entry: dart analyze
+        language: system
+        files: \.dart$
+        pass_filenames: false
+        
+      - id: flutter-pub-get
+        name: flutter pub get
+        entry: flutter pub get
+        language: system
+        files: ^pubspec\.(yaml|lock)$
+        pass_filenames: false
+        
+      - id: check-dependencies
+        name: check dependencies for updates
+        entry: bash -c 'flutter pub outdated --no-dev-dependencies --up-to-date --no-dependency-overrides || true'
+        language: system
+        files: ^pubspec\.yaml$
+        pass_filenames: false
+        verbose: true
