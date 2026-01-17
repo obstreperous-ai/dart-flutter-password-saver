@@ -90,7 +90,9 @@ flutter run -d macos
 
 ### Code Quality and Formatting
 
-This project maintains high code quality standards. Before submitting a PR, ensure your code passes all quality checks:
+This project maintains high code quality standards. Before submitting a PR, ensure your code passes all quality checks.
+
+**📚 For detailed information, see [Code Quality Documentation](docs/CODE_QUALITY.md)**
 
 #### Automated Pre-commit Hooks
 
@@ -108,6 +110,14 @@ We provide git pre-commit hooks that automatically check code quality before eac
 This requires Python and pip to be installed.
 
 #### Manual Code Quality Checks
+
+**Quick Check (Recommended):**
+```bash
+./scripts/check-quality.sh
+```
+This script runs all quality checks and provides a detailed report.
+
+**Individual Checks:**
 
 If you prefer to run checks manually before committing:
 
