@@ -98,12 +98,13 @@ flutter config --enable-macos-desktop
 - Follow Flutter best practices for state management
 
 ### Security Checklist
-- [ ] No hardcoded passwords or keys
-- [ ] All sensitive data encrypted before storage
-- [ ] Encryption keys stored in OS keychain/keyring
-- [ ] No sensitive data in logs or print statements
-- [ ] Proper error handling for security operations
-- [ ] Input validation for user-provided data
+When making changes, verify:
+- No hardcoded passwords or keys
+- All sensitive data encrypted before storage
+- Encryption keys stored in OS keychain/keyring
+- No sensitive data in logs or print statements
+- Proper error handling for security operations
+- Input validation for user-provided data
 
 ## Things to Never Do
 - Never commit secrets, API keys, or encryption keys to source control
