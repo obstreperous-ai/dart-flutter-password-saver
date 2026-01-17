@@ -241,13 +241,11 @@ class _PasswordEditPageState extends State<PasswordEditPage> {
     if (_formKey.currentState!.validate()) {
       final now = DateTime.now();
       final entry = PasswordEntry(
-        id: widget.entry?.id ??
-            DateTime.now().millisecondsSinceEpoch.toString(),
+        id: widget.entry?.id ?? DateTime.now().millisecondsSinceEpoch.toString(),
         title: _titleController.text,
         username: _usernameController.text,
         password: _passwordController.text,
-        notes:
-            _notesController.text.isEmpty ? null : _notesController.text,
+        notes: _notesController.text.isEmpty ? null : _notesController.text,
         createdAt: widget.entry?.createdAt ?? now,
         updatedAt: now,
       );
