@@ -229,14 +229,18 @@ class _PasswordEditPageState extends State<PasswordEditPage> {
   @override
   void initState() {
     super.initState();
-    _titleController =
-        TextEditingController(text: widget.entry?.title ?? '');
-    _usernameController =
-        TextEditingController(text: widget.entry?.username ?? '');
-    _passwordController =
-        TextEditingController(text: widget.entry?.password ?? '');
-    _notesController =
-        TextEditingController(text: widget.entry?.notes ?? '');
+    _titleController = TextEditingController(
+      text: widget.entry?.title ?? '',
+    );
+    _usernameController = TextEditingController(
+      text: widget.entry?.username ?? '',
+    );
+    _passwordController = TextEditingController(
+      text: widget.entry?.password ?? '',
+    );
+    _notesController = TextEditingController(
+      text: widget.entry?.notes ?? '',
+    );
   }
 
   @override

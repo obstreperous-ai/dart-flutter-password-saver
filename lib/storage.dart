@@ -85,7 +85,9 @@ class EncryptedPasswordStorage {
     }
 
     // Convert passwords to JSON
-    final jsonData = jsonEncode(passwords.map((p) => p.toJson()).toList());
+    final jsonData = jsonEncode(
+      passwords.map((p) => p.toJson()).toList(),
+    );
 
     // Encrypt the data
     final encrypted = _encrypter!.encrypt(jsonData, iv: _iv!);
@@ -123,7 +125,9 @@ class EncryptedPasswordStorage {
 
       // Parse JSON
       final List<dynamic> jsonData = jsonDecode(decrypted);
-      return jsonData.map((json) => PasswordEntry.fromJson(json)).toList();
+      return jsonData
+          .map((json) => PasswordEntry.fromJson(json))
+          .toList();
     } catch (e) {
       // If there's an error reading or decrypting, return empty list
       return [];
