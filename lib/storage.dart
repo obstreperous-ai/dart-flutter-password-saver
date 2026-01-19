@@ -33,8 +33,7 @@ class PasswordEntry {
         'updatedAt': updatedAt.toIso8601String(),
       };
 
-  factory PasswordEntry.fromJson(Map<String, dynamic> json) =>
-      PasswordEntry(
+  factory PasswordEntry.fromJson(Map<String, dynamic> json) => PasswordEntry(
         id: json['id'] as String,
         title: json['title'] as String,
         username: json['username'] as String,
