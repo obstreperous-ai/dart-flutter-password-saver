@@ -55,6 +55,12 @@ lib/
 
 ## Build, Lint, and Test Commands
 
+### Formatting
+```bash
+dart format .
+```
+Always run `dart format .` to format all Dart code before committing changes.
+
 ### Linting
 ```bash
 dart analyze
@@ -66,6 +72,19 @@ Uses `analysis_options.yaml` which includes `package:flutter_lints/flutter.yaml`
 flutter pub get
 ```
 
+### Build Commands
+Before considering a task complete, always test that the application builds successfully:
+
+**Linux Build:**
+```bash
+flutter build linux
+```
+
+**macOS Build:**
+```bash
+flutter build macos
+```
+
 ### Running the App
 - **Linux**: `flutter run -d linux`
 - **macOS**: `flutter run -d macos`
@@ -75,6 +94,17 @@ flutter pub get
 flutter config --enable-linux-desktop
 flutter config --enable-macos-desktop
 ```
+
+## Pre-Commit Checklist
+
+Before committing any code changes, **always** complete these steps in order:
+
+1. **Format Code**: Run `dart format .` to ensure all files are properly formatted
+2. **Lint Code**: Run `dart analyze` to check for code quality issues
+3. **Build**: Run `flutter build linux` or `flutter build macos` to verify the code compiles
+4. **Test**: Run any existing tests (when tests are added to the project)
+
+These checks must pass before a task is considered complete.
 
 ## Development Guidelines
 
