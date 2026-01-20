@@ -553,8 +553,11 @@ The Dev Container provides a consistent, reproducible environment:
   "name": "Flutter Password Saver",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "features": {
-    "git": "latest",
-    "flutter-asdf": "stable"
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers-contrib/features/flutter-asdf:2": {
+      "version": "stable",
+      "channel": "stable"
+    }
   },
   "postCreateCommand": "flutter pub get && flutter doctor"
 }
