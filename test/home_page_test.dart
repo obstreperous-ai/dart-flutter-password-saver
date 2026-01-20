@@ -245,10 +245,14 @@ void main() {
         ),
       );
 
-      final passwordField = tester.widget<TextFormField>(
-        find.widgetWithText(TextFormField, 'Password'),
+      // Find the TextField widget inside TextFormField
+      final textField = tester.widget<TextField>(
+        find.descendant(
+          of: find.widgetWithText(TextFormField, 'Password'),
+          matching: find.byType(TextField),
+        ),
       );
-      expect(passwordField.obscureText, true);
+      expect(textField.obscureText, true);
     });
 
     testWidgets('PasswordEditPage has visibility toggle button', (tester) async {
@@ -311,21 +315,27 @@ void main() {
         ),
       );
 
-      // Initially obscured
-      var passwordField = tester.widget<TextFormField>(
-        find.widgetWithText(TextFormField, 'Password'),
+      // Initially obscured - find the TextField widget inside TextFormField
+      var textField = tester.widget<TextField>(
+        find.descendant(
+          of: find.widgetWithText(TextFormField, 'Password'),
+          matching: find.byType(TextField),
+        ),
       );
-      expect(passwordField.obscureText, true);
+      expect(textField.obscureText, true);
 
       // Tap visibility toggle
       await tester.tap(find.byIcon(Icons.visibility));
       await tester.pumpAndSettle();
 
       // Should now be visible
-      passwordField = tester.widget<TextFormField>(
-        find.widgetWithText(TextFormField, 'Password'),
+      textField = tester.widget<TextField>(
+        find.descendant(
+          of: find.widgetWithText(TextFormField, 'Password'),
+          matching: find.byType(TextField),
+        ),
       );
-      expect(passwordField.obscureText, false);
+      expect(textField.obscureText, false);
 
       // Icon should change
       expect(find.byIcon(Icons.visibility_off), findsOneWidget);
