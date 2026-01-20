@@ -549,6 +549,7 @@ Agentic workflows can integrate with this project at multiple levels:
 The Dev Container provides a consistent, reproducible environment:
 
 ```json
+// Simplified example - see .devcontainer/devcontainer.json for full configuration
 {
   "name": "Flutter Password Saver",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
