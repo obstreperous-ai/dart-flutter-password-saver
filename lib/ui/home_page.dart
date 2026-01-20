@@ -108,8 +108,12 @@ class _HomePageState extends State<HomePage> {
       return _passwords;
     }
     return _passwords.where((entry) {
-      return entry.title.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-          entry.username.toLowerCase().contains(_searchQuery.toLowerCase());
+      return entry.title.toLowerCase().contains(
+            _searchQuery.toLowerCase(),
+          ) ||
+          entry.username.toLowerCase().contains(
+            _searchQuery.toLowerCase(),
+          );
     }).toList();
   }
 
@@ -183,12 +187,15 @@ class PasswordListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      margin: const EdgeInsets.symmetric(
+        horizontal: 8,
+        vertical: 4,
+      ),
       child: ListTile(
         leading: CircleAvatar(
-          child: Text(entry.title.isNotEmpty
-              ? entry.title[0].toUpperCase()
-              : '?'),
+          child: Text(
+            entry.title.isNotEmpty ? entry.title[0].toUpperCase() : '?',
+          ),
         ),
         title: Text(entry.title),
         subtitle: Text(entry.username),
@@ -222,10 +229,18 @@ class _PasswordEditPageState extends State<PasswordEditPage> {
   @override
   void initState() {
     super.initState();
-    _titleController = TextEditingController(text: widget.entry?.title ?? '');
-    _usernameController = TextEditingController(text: widget.entry?.username ?? '');
-    _passwordController = TextEditingController(text: widget.entry?.password ?? '');
-    _notesController = TextEditingController(text: widget.entry?.notes ?? '');
+    _titleController = TextEditingController(
+      text: widget.entry?.title ?? '',
+    );
+    _usernameController = TextEditingController(
+      text: widget.entry?.username ?? '',
+    );
+    _passwordController = TextEditingController(
+      text: widget.entry?.password ?? '',
+    );
+    _notesController = TextEditingController(
+      text: widget.entry?.notes ?? '',
+    );
   }
 
   @override
@@ -241,11 +256,13 @@ class _PasswordEditPageState extends State<PasswordEditPage> {
     if (_formKey.currentState!.validate()) {
       final now = DateTime.now();
       final entry = PasswordEntry(
-        id: widget.entry?.id ?? DateTime.now().millisecondsSinceEpoch.toString(),
+        id: widget.entry?.id ??
+            DateTime.now().millisecondsSinceEpoch.toString(),
         title: _titleController.text,
         username: _usernameController.text,
         password: _passwordController.text,
-        notes: _notesController.text.isEmpty ? null : _notesController.text,
+        notes:
+            _notesController.text.isEmpty ? null : _notesController.text,
         createdAt: widget.entry?.createdAt ?? now,
         updatedAt: now,
       );
@@ -321,10 +338,12 @@ class _PasswordEditPageState extends State<PasswordEditPage> {
                       icon: const Icon(Icons.copy),
                       onPressed: () {
                         Clipboard.setData(
-                            ClipboardData(text: _passwordController.text));
+                          ClipboardData(text: _passwordController.text),
+                        );
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                              content: Text('Password copied to clipboard')),
+                            content: Text('Password copied to clipboard'),
+                          ),
                         );
                       },
                     ),
@@ -354,3 +373,4 @@ class _PasswordEditPageState extends State<PasswordEditPage> {
     );
   }
 }
+

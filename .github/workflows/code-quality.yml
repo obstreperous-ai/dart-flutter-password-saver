@@ -28,7 +28,33 @@ jobs:
         run: flutter pub get
       
       - name: Verify formatting
-        run: dart format --set-exit-if-changed .
+        run: |
+          echo "Checking Dart code formatting..."
+          dart format --set-exit-if-changed .
       
       - name: Analyze code
-        run: dart analyze --fatal-infos
+        run: |
+          echo "Running static analysis..."
+          dart analyze --fatal-infos
+      
+      - name: Check for common issues
+        run: |
+          echo "Checking for common issues..."
+          # Check for print statements (should not be in production code)
+          if grep -r "print(" lib/ --include="*.dart" | grep -v "// ignore" | grep -v "test"; then
+            echo "Warning: Found print() statements in code. Consider using proper logging."
+            # Not failing the build, just warning
+          fi
+          
+          # Check for TODO/FIXME comments
+          echo ""
+          echo "Checking for TODO/FIXME comments..."
+          grep -r "TODO\|FIXME" lib/ --include="*.dart" || echo "No TODOs or FIXMEs found"
+      
+      - name: Report success
+        if: success()
+        run: |
+          echo "✓ All code quality checks passed!"
+          echo "  - Code formatting: ✓"
+          echo "  - Static analysis: ✓"
+          echo "  - Common issues check: ✓"
