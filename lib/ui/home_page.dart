@@ -3,14 +3,16 @@ import 'package:flutter/services.dart';
 import '../storage.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final EncryptedPasswordStorage? storage;
+
+  const HomePage({super.key, this.storage});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  final EncryptedPasswordStorage _storage = EncryptedPasswordStorage();
+  late final EncryptedPasswordStorage _storage;
   List<PasswordEntry> _passwords = [];
   bool _isLoading = true;
   String _searchQuery = '';
@@ -18,6 +20,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    _storage = widget.storage ?? EncryptedPasswordStorage();
     _initializeStorage();
   }
 
