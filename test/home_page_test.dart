@@ -3,12 +3,35 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:password_saver/ui/home_page.dart';
 import 'package:password_saver/storage.dart';
 
+/// Mock implementation of EncryptedPasswordStorage for testing
+/// This mock completes all async operations immediately without performing
+/// real file I/O or keychain operations
+class MockEncryptedPasswordStorage extends EncryptedPasswordStorage {
+  @override
+  Future<void> initialize() async {
+    // Complete immediately without real initialization
+    return;
+  }
+
+  @override
+  Future<List<PasswordEntry>> loadPasswords() async {
+    // Return empty list immediately
+    return [];
+  }
+
+  @override
+  Future<void> savePasswords(List<PasswordEntry> passwords) async {
+    // Complete immediately without real saving
+    return;
+  }
+}
+
 void main() {
   group('HomePage Widget Tests', () {
     testWidgets('HomePage displays app bar with correct title', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: HomePage(),
+        MaterialApp(
+          home: HomePage(storage: MockEncryptedPasswordStorage()),
         ),
       );
 
@@ -32,8 +55,8 @@ void main() {
 
     testWidgets('HomePage shows search field after loading', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: HomePage(),
+        MaterialApp(
+          home: HomePage(storage: MockEncryptedPasswordStorage()),
         ),
       );
 
@@ -46,8 +69,8 @@ void main() {
 
     testWidgets('HomePage shows empty state when no passwords', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: HomePage(),
+        MaterialApp(
+          home: HomePage(storage: MockEncryptedPasswordStorage()),
         ),
       );
 
@@ -59,8 +82,8 @@ void main() {
 
     testWidgets('HomePage has floating action button', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: HomePage(),
+        MaterialApp(
+          home: HomePage(storage: MockEncryptedPasswordStorage()),
         ),
       );
 
