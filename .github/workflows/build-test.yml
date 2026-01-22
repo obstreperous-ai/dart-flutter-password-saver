@@ -37,7 +37,8 @@ jobs:
             clang cmake ninja-build pkg-config \
             libgtk-3-dev liblzma-dev \
             libstdc++-12-dev libsecret-1-dev \
-            libsecret-1-0 libjsoncpp-dev
+            libsecret-1-0 libjsoncpp-dev \
+            libdbus-1-dev libglib2.0-dev libharfbuzz-dev libssl-dev
       
       - name: Flutter doctor
         run: flutter doctor -v
