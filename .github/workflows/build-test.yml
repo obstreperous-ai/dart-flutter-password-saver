@@ -34,11 +34,33 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y \
-            clang cmake ninja-build pkg-config \
+            clang ninja-build pkg-config \
             libgtk-3-dev liblzma-dev \
             libstdc++-12-dev libsecret-1-dev \
             libsecret-1-0 libjsoncpp-dev \
             libdbus-1-dev libglib2.0-dev libharfbuzz-dev libssl-dev
+      
+      - name: Install CMake 3.30 (compatible with flutter_secure_storage)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          # Remove existing CMake
+          sudo apt-get remove -y cmake
+          # Download and install CMake 3.30.6
+          wget -q https://github.com/Kitware/CMake/releases/download/v3.30.6/cmake-3.30.6-linux-x86_64.sh
+          chmod +x cmake-3.30.6-linux-x86_64.sh
+          sudo ./cmake-3.30.6-linux-x86_64.sh --skip-license --prefix=/usr/local
+          rm cmake-3.30.6-linux-x86_64.sh
+          # Verify CMake version
+          cmake --version
+      
+      - name: Verify Linux dependencies
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          echo "Verifying pkg-config can find libsecret-1..."
+          pkg-config --modversion libsecret-1
+          echo "Verifying CMake version..."
+          cmake --version
+          echo "Dependencies verified successfully"
       
       - name: Flutter doctor
         run: flutter doctor -v
@@ -53,6 +75,10 @@ jobs:
           else
             flutter config --enable-macos-desktop
           fi
+      
+      - name: Clean build artifacts
+        if: matrix.os == 'ubuntu-latest'
+        run: flutter clean
       
       - name: Build for Linux
         if: matrix.os == 'ubuntu-latest'
