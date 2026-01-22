@@ -7,22 +7,29 @@ import 'package:password_saver/storage.dart';
 /// This mock completes all async operations immediately without performing
 /// real file I/O or keychain operations
 class MockEncryptedPasswordStorage extends EncryptedPasswordStorage {
+  bool _initialized = false;
+
   @override
   Future<void> initialize() async {
-    // Complete immediately without real initialization
-    return;
+    _initialized = true;
+    // Complete immediately without real initialization - don't access keychain
   }
 
   @override
   Future<List<PasswordEntry>> loadPasswords() async {
+    if (!_initialized) {
+      throw Exception('Mock storage not initialized');
+    }
     // Return empty list immediately
     return [];
   }
 
   @override
   Future<void> savePasswords(List<PasswordEntry> passwords) async {
+    if (!_initialized) {
+      throw Exception('Mock storage not initialized');
+    }
     // Complete immediately without real saving
-    return;
   }
 }
 
