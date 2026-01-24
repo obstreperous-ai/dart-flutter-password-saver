@@ -53,11 +53,22 @@ jobs:
           # Verify CMake version
           cmake --version
       
+      - name: Set up pkg-config environment
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          export PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/share/pkgconfig:$PKG_CONFIG_PATH
+          echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH" >> $GITHUB_ENV
+      
       - name: Verify Linux dependencies
         if: matrix.os == 'ubuntu-latest'
         run: |
+          echo "Verifying pkg-config installation..."
+          which pkg-config
+          pkg-config --version
           echo "Verifying pkg-config can find libsecret-1..."
           pkg-config --modversion libsecret-1
+          pkg-config --cflags libsecret-1
+          pkg-config --libs libsecret-1
           echo "Verifying CMake version..."
           cmake --version
           echo "Dependencies verified successfully"
@@ -83,6 +94,8 @@ jobs:
       - name: Build for Linux
         if: matrix.os == 'ubuntu-latest'
         run: flutter build linux --release
+        env:
+          PKG_CONFIG_PATH: /usr/lib/x86_64-linux-gnu/pkgconfig:/usr/share/pkgconfig
       
       - name: Build for macOS
         if: matrix.os == 'macos-latest'
