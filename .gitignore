@@ -30,11 +30,16 @@ doc/api/
 
 # Flutter/Dart/Pub related
 **/generated_plugin_registrant.dart
+**/generated_plugin_registrant.cc
+**/generated_plugin_registrant.h
 **/generated_plugins.cmake
 **/GeneratedPluginRegistrant.swift
 **/GeneratedPluginRegistrant.m
 **/GeneratedPluginRegistrant.h
 .flutter-plugins-dependencies
+.flutter
+.config/
+.dart-tool/
 
 # Platform-specific build outputs
 linux/flutter/ephemeral/
