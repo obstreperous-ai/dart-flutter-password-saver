@@ -8,7 +8,7 @@ This is a cross-platform desktop password saver app built with Flutter and Dart.
 - **Dart**: >= 3.0.0
 - **Target Platforms**: macOS and Linux desktop
 - **Key Dependencies**:
-  - `flutter_secure_storage` (^9.0.0) - OS-backed secure storage for encryption keys
+  - `flutter_secure_storage` (^10.0.0) - OS-backed secure storage for encryption keys
   - `encrypt` (^5.0.3) - AES encryption for password data
   - `path_provider` (^2.1.1) - Access to application document directory
 
