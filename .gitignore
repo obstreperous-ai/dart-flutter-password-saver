@@ -37,7 +37,6 @@ doc/api/
 **/GeneratedPluginRegistrant.swift
 **/GeneratedPluginRegistrant.m
 **/GeneratedPluginRegistrant.h
-.flutter-plugins-dependencies
 .flutter
 .config/
 
