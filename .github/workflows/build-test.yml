@@ -40,19 +40,6 @@ jobs:
             libsecret-1-0 libjsoncpp-dev \
             libdbus-1-dev libglib2.0-dev libharfbuzz-dev libssl-dev
       
-      - name: Install CMake 3.30 (compatible with flutter_secure_storage)
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          # Remove existing CMake
-          sudo apt-get remove -y cmake
-          # Download and install CMake 3.30.6
-          wget -q https://github.com/Kitware/CMake/releases/download/v3.30.6/cmake-3.30.6-linux-x86_64.sh
-          chmod +x cmake-3.30.6-linux-x86_64.sh
-          sudo ./cmake-3.30.6-linux-x86_64.sh --skip-license --prefix=/usr/local
-          rm cmake-3.30.6-linux-x86_64.sh
-          # Verify CMake version
-          cmake --version
-      
       - name: Set up pkg-config environment
         if: matrix.os == 'ubuntu-latest'
         run: |
@@ -69,8 +56,6 @@ jobs:
           pkg-config --modversion libsecret-1
           pkg-config --cflags libsecret-1
           pkg-config --libs libsecret-1
-          echo "Verifying CMake version..."
-          cmake --version
           echo "Dependencies verified successfully"
       
       - name: Flutter doctor
