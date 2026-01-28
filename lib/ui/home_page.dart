@@ -112,11 +112,11 @@ class _HomePageState extends State<HomePage> {
     }
     return _passwords.where((entry) {
       return entry.title.toLowerCase().contains(
-            _searchQuery.toLowerCase(),
-          ) ||
+                _searchQuery.toLowerCase(),
+              ) ||
           entry.username.toLowerCase().contains(
-            _searchQuery.toLowerCase(),
-          );
+                _searchQuery.toLowerCase(),
+              );
     }).toList();
   }
 
@@ -264,8 +264,7 @@ class _PasswordEditPageState extends State<PasswordEditPage> {
         title: _titleController.text,
         username: _usernameController.text,
         password: _passwordController.text,
-        notes:
-            _notesController.text.isEmpty ? null : _notesController.text,
+        notes: _notesController.text.isEmpty ? null : _notesController.text,
         createdAt: widget.entry?.createdAt ?? now,
         updatedAt: now,
       );
@@ -376,4 +375,3 @@ class _PasswordEditPageState extends State<PasswordEditPage> {
     );
   }
 }
-
