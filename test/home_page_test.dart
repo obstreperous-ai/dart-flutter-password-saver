@@ -130,7 +130,8 @@ void main() {
       expect(find.byIcon(Icons.delete), findsOneWidget);
     });
 
-    testWidgets('PasswordListItem shows first letter in avatar', (tester) async {
+    testWidgets('PasswordListItem shows first letter in avatar',
+        (tester) async {
       final entry = PasswordEntry(
         id: '1',
         title: 'GitHub',
@@ -187,7 +188,8 @@ void main() {
       expect(tapped, true);
     });
 
-    testWidgets('PasswordListItem calls onDelete when delete tapped', (tester) async {
+    testWidgets('PasswordListItem calls onDelete when delete tapped',
+        (tester) async {
       var deleted = false;
       final entry = PasswordEntry(
         id: '1',
@@ -220,7 +222,8 @@ void main() {
   });
 
   group('PasswordEditPage Widget Tests', () {
-    testWidgets('PasswordEditPage shows "Add Password" for new entry', (tester) async {
+    testWidgets('PasswordEditPage shows "Add Password" for new entry',
+        (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: PasswordEditPage(),
@@ -230,7 +233,8 @@ void main() {
       expect(find.text('Add Password'), findsOneWidget);
     });
 
-    testWidgets('PasswordEditPage shows "Edit Password" for existing entry', (tester) async {
+    testWidgets('PasswordEditPage shows "Edit Password" for existing entry',
+        (tester) async {
       final entry = PasswordEntry(
         id: '1',
         title: 'Test',
@@ -249,7 +253,8 @@ void main() {
       expect(find.text('Edit Password'), findsOneWidget);
     });
 
-    testWidgets('PasswordEditPage has all required text fields', (tester) async {
+    testWidgets('PasswordEditPage has all required text fields',
+        (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: PasswordEditPage(),
@@ -285,7 +290,8 @@ void main() {
       expect(textField.obscureText, true);
     });
 
-    testWidgets('PasswordEditPage has visibility toggle button', (tester) async {
+    testWidgets('PasswordEditPage has visibility toggle button',
+        (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: PasswordEditPage(),
@@ -315,7 +321,8 @@ void main() {
       expect(find.byIcon(Icons.save), findsOneWidget);
     });
 
-    testWidgets('PasswordEditPage pre-fills fields for existing entry', (tester) async {
+    testWidgets('PasswordEditPage pre-fills fields for existing entry',
+        (tester) async {
       final entry = PasswordEntry(
         id: '1',
         title: 'GitHub',
