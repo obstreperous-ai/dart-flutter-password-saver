@@ -38,7 +38,10 @@ lib/
 - Encryption keys must be 32 bytes (256 bits)
 - Initialization vectors (IV) must be 16 bytes (128 bits)
 - Always initialize encryption before performing any storage operations
-- Handle encryption/decryption errors gracefully
+- Handle encryption/decryption errors gracefully with try-catch blocks
+- Log errors using proper logging (never use `print()` for sensitive data)
+- Return Result types or throw custom exceptions for error conditions
+- Provide user-friendly error messages in UI
 
 ### Naming Conventions
 - Use descriptive class names (e.g., `PasswordEntry`, `EncryptedPasswordStorage`)
@@ -52,14 +55,34 @@ lib/
 - Return empty lists instead of throwing errors for missing data files
 - Provide clear error messages when encryption is not initialized
 - Handle secure storage read/write failures gracefully
+- Wrap encryption operations in try-catch blocks
+- Log errors appropriately without exposing sensitive data
 
 ## Test-Driven Development (TDD) Best Practices
 
-This project follows TDD principles. Always write or update tests when making code changes.
+This project follows TDD principles. **Always write or update tests when making code changes.**
+
+### Test-First Development Flow
+
+**When adding NEW features:**
+1. Write failing tests first that define expected behavior
+2. Run `flutter test` and verify tests fail (Red phase)
+3. Implement minimal code to make tests pass
+4. Run `flutter test` and verify tests now pass (Green phase)
+5. Refactor if needed, re-running tests after each change (Refactor phase)
+6. Proceed to Mandatory Quality Gates checklist
+
+**When fixing BUGS:**
+1. Write a test that reproduces the bug
+2. Verify the test fails
+3. Fix the bug in production code
+4. Verify the test now passes
+5. Proceed to Mandatory Quality Gates checklist
 
 ### Testing Guidelines
 - Write tests **before** implementing features when adding new functionality
 - Run tests **after** making any code changes to verify correctness
+- Run tests after every significant code modification during development
 - Keep tests focused, readable, and maintainable
 - Follow the Arrange-Act-Assert (AAA) pattern in test structure
 - Use descriptive test names that explain what is being tested
@@ -95,6 +118,152 @@ test('test1', () {
 });
 ```
 
+## Mandatory Quality Gates
+
+**CRITICAL**: Execute these steps IN ORDER before any commit or PR creation. If ANY step fails, fix it and restart from step 1.
+
+### Pre-Commit Workflow Checklist
+
+#### 1. Install Dependencies
+```bash
+flutter pub get
+```
+- **Must complete**: Exit code 0, all dependencies resolved
+- **If fails**: Check pubspec.yaml for syntax errors or version conflicts
+- **Do not proceed** if dependencies fail to install
+
+#### 2. Format Code
+```bash
+dart format .
+```
+- **Must complete**: Exit code 0 (no formatting changes needed)
+- **If code was reformatted**: Review the changes to ensure they're reasonable
+- **Action**: If formatting was applied, restart this checklist from step 1
+- **Do not proceed** with unformatted code
+
+#### 3. Run Static Analysis
+```bash
+dart analyze --fatal-infos
+```
+- **Must complete**: ZERO errors, warnings, or infos
+- **If fails**: Read error output carefully and fix each issue in code
+- **Action**: After fixing issues, re-run `dart analyze --fatal-infos`
+- **Do not proceed** until analysis is completely clean
+
+#### 4. Run All Tests
+```bash
+flutter test
+```
+- **Must complete**: ALL tests pass, exit code 0, 100% pass rate
+- **If fails**: Read test failure output carefully
+  - Determine if bug is in production code or test code
+  - Fix the issue
+  - Re-run `flutter test`
+- **Do not proceed** if any tests fail
+- **Do not proceed** if tests are skipped without good reason
+
+#### 5. Verify Linux Build
+```bash
+flutter build linux
+```
+- **Must complete**: Successful build with exit code 0
+- **If fails**: Read compilation error output
+  - Fix syntax, type, or dependency errors in code
+  - Re-run `flutter build linux`
+- **Do not proceed** if build fails
+
+#### 6. Verify macOS Build
+```bash
+flutter build macos
+```
+- **Must complete**: Successful build with exit code 0
+- **If fails**: Read compilation error output
+  - Fix syntax, type, or dependency errors in code
+  - Re-run `flutter build macos`
+- **Do not proceed** if build fails
+
+#### 7. Final Code Review
+Before creating a PR or committing, verify:
+- [ ] No debug code remains (no `debugPrint`, test scaffolding, etc.)
+- [ ] No `print()` statements for logging (use proper logging)
+- [ ] No TODO comments left unaddressed (move to issues if needed)
+- [ ] No hardcoded secrets, keys, or sensitive test data
+- [ ] All new code follows conventions in this document
+- [ ] All changed files have been reviewed
+- [ ] Commit message is clear and descriptive
+
+### Quick Pre-Commit Command Chain
+
+For efficiency, chain commands together (stops at first failure):
+```bash
+flutter pub get && \
+  dart format . && \
+  dart analyze --fatal-infos && \
+  flutter test && \
+  flutter build linux && \
+  flutter build macos
+```
+
+**Note**: This command chain will stop immediately when any command fails, making it easy to identify which check needs attention.
+
+### When Build Commands Cannot Be Executed
+
+If you are in an environment where builds cannot be executed (e.g., limited CI agent, containerized environment):
+1. **Explicitly state this limitation** in the PR description
+2. **List all quality checks that WERE completed** (formatting, analysis, tests)
+3. **Add a warning** that builds must be verified locally before merging
+4. **Label the PR** appropriately (e.g., "needs-build-verification")
+
+### Handling Quality Gate Failures
+
+#### If `dart analyze` fails:
+1. Read the error/warning output carefully (each line indicates a problem)
+2. Fix each issue in the code (do not ignore warnings)
+3. Re-run `dart analyze --fatal-infos`
+4. **Do NOT proceed** until zero issues remain
+5. If you believe a warning is a false positive, document why and use `// ignore: rule_name` sparingly
+
+#### If `flutter test` fails:
+1. Read the test failure output carefully
+2. Identify which test failed and why
+3. Determine if the bug is in production code or test code
+4. Fix the issue
+5. Re-run `flutter test`
+6. **Do NOT proceed** until all tests pass
+7. If a test is flaky, fix the flakiness rather than ignoring it
+
+#### If `dart format` makes changes:
+1. Review what was reformatted
+2. Restart the checklist from step 1
+3. **Do NOT** manually override formatter preferences
+
+#### If builds fail (`flutter build linux` or `flutter build macos`):
+1. Read the compilation error output carefully
+2. Fix syntax errors, type errors, or import issues
+3. Re-run the build command
+4. **Do NOT proceed** until build succeeds
+5. If build fails with platform-specific issues, check dependencies in `pubspec.yaml`
+
+## Definition of Done
+
+Work is **ONLY** complete and ready for PR/commit when ALL of the following are true:
+
+- [ ] All code follows conventions documented in this file
+- [ ] All tests pass with 100% pass rate (`flutter test`)
+- [ ] Code is properly formatted (`dart format .` makes no changes)
+- [ ] Static analysis returns zero issues (`dart analyze --fatal-infos`)
+- [ ] Linux build succeeds (`flutter build linux`)
+- [ ] macOS build succeeds (`flutter build macos`)
+- [ ] No security violations (no plain-text secrets, proper encryption usage)
+- [ ] No `print()` statements for logging
+- [ ] No debug code or TODOs remain
+- [ ] Manual testing performed for UI/feature changes (when applicable)
+- [ ] PR description explains what changed and why
+- [ ] New features include appropriate tests
+- [ ] Bug fixes include regression tests
+
+**If any item above is not checked, the work is NOT complete.**
+
 ## Build, Lint, and Test Commands
 
 ### Get Dependencies
@@ -110,6 +279,7 @@ flutter test
 - Runs all tests in the `test/` directory
 - Use `flutter test test/specific_test.dart` to run a single test file
 - Use `flutter test --coverage` to generate coverage reports
+- **Must be run** after every code change during development
 
 ### Formatting
 ```bash
@@ -150,94 +320,6 @@ flutter config --enable-linux-desktop
 flutter config --enable-macos-desktop
 ```
 
-## Pre-Commit Workflow
-
-**CRITICAL**: Before committing any code changes, you **MUST** complete these steps in order. This workflow ensures code quality and prevents CI failures.
-
-### Step-by-Step Pre-Commit Process
-
-1. **Install Dependencies**
-   ```bash
-   flutter pub get
-   ```
-   Ensures all dependencies are installed and up-to-date.
-
-2. **Run Tests** ⚠️ **DO THIS FIRST**
-   ```bash
-   flutter test
-   ```
-   - Verify all tests pass with your changes
-   - If tests fail, fix the code or update tests appropriately
-   - **NEVER** commit code with failing tests
-   - If adding new features, ensure new tests are included
-
-3. **Format Code**
-   ```bash
-   dart format .
-   ```
-   - Automatically formats code to project standards
-   - This **must** be done after tests pass to avoid conflicts
-   - Re-run tests if formatter makes significant changes
-
-4. **Lint Code**
-   ```bash
-   dart analyze
-   ```
-   - Checks for code quality issues, potential bugs, and style violations
-   - Fix all errors and warnings before proceeding
-   - Use `dart analyze --fatal-infos` for strictest checking (same as CI)
-
-5. **Build Application**
-   ```bash
-   # For Linux
-   flutter build linux
-   
-   # For macOS
-   flutter build macos
-   ```
-   - Verifies the application compiles successfully
-   - Catches compilation errors that might not appear in tests
-   - **Required** before commit - if build fails, your changes are incomplete
-
-6. **Verify Changes Manually** (when applicable)
-   ```bash
-   flutter run -d linux  # or -d macos
-   ```
-   - Test UI changes by running the application
-   - Verify new features work as expected
-   - Check that existing functionality still works
-
-### Quick Pre-Commit Command Chain
-
-For efficiency, you can chain commands together:
-```bash
-flutter pub get && \
-flutter test && \
-dart format . && \
-dart analyze && \
-flutter build linux
-```
-
-This will stop at the first failure, making it easy to identify issues.
-
-### ⚠️ Common Mistakes to Avoid
-
-- ❌ **Don't** format before running tests - formatted code might still have logic errors
-- ❌ **Don't** skip tests because they're slow - failing tests mean broken code
-- ❌ **Don't** commit with linting warnings - they indicate code quality issues
-- ❌ **Don't** assume CI will catch issues - run checks locally first
-- ❌ **Don't** skip the build step - tests passing doesn't guarantee compilation
-- ✅ **Do** follow the exact order: Dependencies → Tests → Format → Lint → Build
-
-### All Checks Must Pass
-
-Your code is **not ready to commit** unless:
-- ✅ All tests pass (`flutter test`)
-- ✅ Code is formatted (`dart format .`)
-- ✅ No linting errors (`dart analyze`)
-- ✅ Application builds successfully (`flutter build`)
-- ✅ Manual testing confirms changes work (for UI/feature changes)
-
 ## Development Guidelines
 
 ### When Adding New Features (TDD Approach)
@@ -258,6 +340,7 @@ Your code is **not ready to commit** unless:
    - Run `flutter test` after each refactoring step
 
 4. **Validate**
+   - Run through the Mandatory Quality Gates checklist
    - Ensure all tests pass
    - Run linter and fix any issues
    - Build the application to verify compilation
@@ -272,10 +355,12 @@ Your code is **not ready to commit** unless:
 - **Always** run existing tests before making changes (baseline)
 - Write new tests for bug fixes to prevent regression
 - Update existing tests if behavior intentionally changes
+- Run `flutter test` after each significant change
 - Maintain the existing project structure
 - Keep security as the top priority
 - Add appropriate error handling
 - Follow the existing code style
+- Run through Mandatory Quality Gates before committing
 
 ### When Modifying Storage Logic
 - **Critical**: Write tests for all storage operations
@@ -285,6 +370,7 @@ Your code is **not ready to commit** unless:
 - Ensure secure storage operations are atomic
 - Maintain the existing JSON serialization format for `PasswordEntry`
 - Add tests for data migration if format changes
+- Verify encryption keys are never exposed in logs or errors
 
 ### When Modifying UI
 - Write widget tests for new UI components
@@ -295,24 +381,31 @@ Your code is **not ready to commit** unless:
 - Use `const` constructors for widgets where possible
 - Follow Flutter best practices for state management
 - Verify changes manually by running the app
+- Test both Linux and macOS platforms if UI is platform-specific
 
 ### Security Checklist
 When making changes, verify:
-- No hardcoded passwords or keys
-- All sensitive data encrypted before storage
-- Encryption keys stored in OS keychain/keyring
-- No sensitive data in logs or print statements
-- Proper error handling for security operations
-- Input validation for user-provided data
+- [ ] No hardcoded passwords or keys
+- [ ] All sensitive data encrypted before storage
+- [ ] Encryption keys stored in OS keychain/keyring via `flutter_secure_storage`
+- [ ] No sensitive data in logs or print statements
+- [ ] Proper error handling for security operations that doesn't leak sensitive info
+- [ ] Input validation for user-provided data
+- [ ] No sensitive data in test files or fixtures
 
 ## Things to Never Do
 - Never commit secrets, API keys, or encryption keys to source control
 - Never use weak encryption algorithms or short keys
 - Never store passwords in plain text
-- Never modify security-critical code without thorough understanding
+- Never modify security-critical code without thorough understanding and testing
 - Never remove or bypass encryption mechanisms
 - Never use `print()` to output sensitive information
 - Never introduce breaking changes to the storage format without migration logic
+- **Never skip the Mandatory Quality Gates checklist**
+- **Never commit code with failing tests**
+- **Never commit code that doesn't build successfully**
+- **Never ignore linter warnings or errors**
+- **Never create a PR without running through the Definition of Done checklist**
 
 ## Troubleshooting
 
@@ -433,6 +526,7 @@ flutter pub upgrade package_name
 # Run same commands as CI
 dart format --set-exit-if-changed .
 dart analyze --fatal-infos
+flutter test
 ```
 
 **Issue:** Build workflow times out
@@ -457,3 +551,18 @@ If you encounter persistent issues:
 - All password data is stored in an encrypted file (`passwords.enc`) in the app's document directory
 - The app targets desktop platforms only (no mobile support currently)
 - Review the [CODE_QUALITY.md](../docs/CODE_QUALITY.md) for comprehensive quality guidelines
+
+---
+
+## Summary of Key Improvements
+
+This revised instruction set includes:
+1. **Mandatory Quality Gates**: Clear, numbered checklist that must be completed before any commit
+2. **Explicit Failure Handling**: Detailed instructions for what to do when each check fails
+3. **Definition of Done**: Comprehensive checklist to determine if work is truly complete
+4. **Stronger TDD Guidance**: Clear workflows for when to write tests and how to integrate them
+5. **Security Enhancements**: More specific requirements for error handling and logging
+6. **Command Chain**: Quick verification script that stops at first failure
+7. **No Ambiguity**: Clear "Do NOT proceed" language when checks fail
+
+These changes should significantly improve Copilot's ability to deliver code that passes quality checks and builds successfully on the first try.
