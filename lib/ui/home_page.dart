@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> _addPassword() async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(
+      MaterialPageRoute<PasswordEntry>(
         builder: (context) => const PasswordEditPage(),
       ),
     );
@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> _editPassword(int index) async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(
+      MaterialPageRoute<PasswordEntry>(
         builder: (context) => PasswordEditPage(entry: _passwords[index]),
       ),
     );
@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
 
-    if (confirmed == true) {
+    if (confirmed ?? false) {
       setState(() {
         _passwords.removeAt(index);
       });
@@ -132,7 +132,7 @@ class _HomePageState extends State<HomePage> {
           : Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8),
                   child: TextField(
                     decoration: const InputDecoration(
                       labelText: 'Search',
@@ -327,9 +327,11 @@ class _PasswordEditPageState extends State<PasswordEditPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                      icon: Icon(_obscurePassword
-                          ? Icons.visibility
-                          : Icons.visibility_off),
+                      icon: Icon(
+                        _obscurePassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
                       onPressed: () {
                         setState(() {
                           _obscurePassword = !_obscurePassword;

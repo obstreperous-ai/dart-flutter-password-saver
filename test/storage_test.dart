@@ -119,7 +119,7 @@ void main() {
       final storage = EncryptedPasswordStorage();
 
       expect(
-        () => storage.loadPasswords(),
+        storage.loadPasswords,
         throwsA(
           isA<Exception>().having(
             (e) => e.toString(),

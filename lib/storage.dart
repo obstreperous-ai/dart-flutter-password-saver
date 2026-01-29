@@ -23,16 +23,6 @@ class PasswordEntry {
     required this.updatedAt,
   });
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'title': title,
-        'username': username,
-        'password': password,
-        'notes': notes,
-        'createdAt': createdAt.toIso8601String(),
-        'updatedAt': updatedAt.toIso8601String(),
-      };
-
   factory PasswordEntry.fromJson(Map<String, dynamic> json) => PasswordEntry(
         id: json['id'] as String,
         title: json['title'] as String,
@@ -42,6 +32,16 @@ class PasswordEntry {
         createdAt: DateTime.parse(json['createdAt'] as String),
         updatedAt: DateTime.parse(json['updatedAt'] as String),
       );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'title': title,
+        'username': username,
+        'password': password,
+        'notes': notes,
+        'createdAt': createdAt.toIso8601String(),
+        'updatedAt': updatedAt.toIso8601String(),
+      };
 }
 
 class EncryptedPasswordStorage {
@@ -79,7 +79,9 @@ class EncryptedPasswordStorage {
 
   /// Encrypt and save password entries
   Future<void> savePasswords(List<PasswordEntry> passwords) async {
-    if (_encrypter == null) {
+    final encrypter = _encrypter;
+    final iv = _iv;
+    if (encrypter == null || iv == null) {
       throw Exception('Encryption not initialized. Call initialize() first.');
     }
 
@@ -89,7 +91,7 @@ class EncryptedPasswordStorage {
     );
 
     // Encrypt the data
-    final encrypted = _encrypter!.encrypt(jsonData, iv: _iv!);
+    final encrypted = encrypter.encrypt(jsonData, iv: iv);
 
     // Get the app's document directory
     final directory = await getApplicationDocumentsDirectory();
@@ -101,7 +103,9 @@ class EncryptedPasswordStorage {
 
   /// Load and decrypt password entries
   Future<List<PasswordEntry>> loadPasswords() async {
-    if (_encrypter == null) {
+    final encrypter = _encrypter;
+    final iv = _iv;
+    if (encrypter == null || iv == null) {
       throw Exception('Encryption not initialized. Call initialize() first.');
     }
 
@@ -111,7 +115,7 @@ class EncryptedPasswordStorage {
       final file = File('${directory.path}/$_fileName');
 
       // Check if file exists
-      if (!await file.exists()) {
+      if (!file.existsSync()) {
         return [];
       }
 
@@ -120,11 +124,13 @@ class EncryptedPasswordStorage {
       final encrypted = Encrypted.fromBase64(encryptedData);
 
       // Decrypt the data
-      final decrypted = _encrypter!.decrypt(encrypted, iv: _iv!);
+      final decrypted = encrypter.decrypt(encrypted, iv: iv);
 
       // Parse JSON
-      final List<dynamic> jsonData = jsonDecode(decrypted);
-      return jsonData.map((json) => PasswordEntry.fromJson(json)).toList();
+      final List<dynamic> jsonData = jsonDecode(decrypted) as List<dynamic>;
+      return jsonData
+          .map((json) => PasswordEntry.fromJson(json as Map<String, dynamic>))
+          .toList();
     } catch (e) {
       // If there's an error reading or decrypting, return empty list
       return [];
@@ -137,8 +143,8 @@ class EncryptedPasswordStorage {
     try {
       final directory = await getApplicationDocumentsDirectory();
       final file = File('${directory.path}/$_fileName');
-      if (await file.exists()) {
-        await file.delete();
+      if (file.existsSync()) {
+        file.deleteSync();
       }
     } catch (e) {
       // Ignore errors
