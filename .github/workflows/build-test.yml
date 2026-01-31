@@ -58,20 +58,20 @@ jobs:
           pkg-config --libs libsecret-1
           echo "Dependencies verified successfully"
       
-      - name: Install CMake 3.29
+      - name: Install CMake 3.30
         if: matrix.os == 'ubuntu-latest'
         run: |
           # Remove existing CMake
           sudo apt-get remove -y cmake
           
-          # Download and install CMake 3.29.3 (has fix for pkg_check_modules bug)
-          wget https://github.com/Kitware/CMake/releases/download/v3.29.3/cmake-3.29.3-linux-x86_64.sh
-          chmod +x cmake-3.29.3-linux-x86_64.sh
-          sudo ./cmake-3.29.3-linux-x86_64.sh --prefix=/usr/local --skip-license
+          # Download and install CMake 3.30.6 (has fix for pkg_check_modules bug)
+          wget https://github.com/Kitware/CMake/releases/download/v3.30.6/cmake-3.30.6-linux-x86_64.sh
+          chmod +x cmake-3.30.6-linux-x86_64.sh
+          sudo ./cmake-3.30.6-linux-x86_64.sh --prefix=/usr/local --skip-license
           
           # Verify installation
           cmake --version
-          echo "CMake 3.29.3 installed successfully"
+          echo "CMake 3.30.6 installed successfully"
       
       - name: Flutter doctor
         run: flutter doctor -v
