@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 import '../storage.dart';
 
 class HomePage extends StatefulWidget {
-  final EncryptedPasswordStorage? storage;
-
   const HomePage({super.key, this.storage});
+
+  final EncryptedPasswordStorage? storage;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -176,16 +176,16 @@ class _HomePageState extends State<HomePage> {
 }
 
 class PasswordListItem extends StatelessWidget {
-  final PasswordEntry entry;
-  final VoidCallback onTap;
-  final VoidCallback onDelete;
-
   const PasswordListItem({
     super.key,
     required this.entry,
     required this.onTap,
     required this.onDelete,
   });
+
+  final PasswordEntry entry;
+  final VoidCallback onTap;
+  final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -213,9 +213,9 @@ class PasswordListItem extends StatelessWidget {
 }
 
 class PasswordEditPage extends StatefulWidget {
-  final PasswordEntry? entry;
-
   const PasswordEditPage({super.key, this.entry});
+
+  final PasswordEntry? entry;
 
   @override
   State<PasswordEditPage> createState() => _PasswordEditPageState();
